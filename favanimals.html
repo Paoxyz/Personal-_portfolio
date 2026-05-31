@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Fave Animals | Paolo Garcia</title>
+    <style>
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; background-color: #050505; }
+        body { background-color: #050505; color: #efefef; font-family: 'Inter', sans-serif; overflow-x: hidden; transition: all 0.4s ease; padding-top: 100px; }
+        .content-wrapper { position: relative; z-index: 10; }
+
+        /* HEADER */
+        #main-header {
+            position: fixed; top: 0; left: 0; width: 100%; height: 80px; z-index: 1000;
+            display: flex; align-items: center; padding: 0 5%; transition: all 0.3s;
+            background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* ANIMAL CARDS */
+        .animal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        .animal-card {
+            background: rgba(17, 17, 17, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px; padding: 1.5rem;
+            backdrop-filter: blur(15px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative; overflow: hidden;
+        }
+
+        .animal-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .animal-img {
+            width: 100%; height: 200px;
+            background-color: #111; border-radius: 16px;
+            margin-bottom: 1.5rem; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .animal-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .animal-card:hover .animal-img img { transform: scale(1.1); }
+
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 10px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 2px; color: #71717a; transition: all 0.3s;
+        }
+        .back-btn:hover { color: #fff; transform: translateX(-5px); }
+
+        /* THEME TOGGLE */
+        #theme-toggle { padding: 8px 16px; border-radius: 50px; border: 1px solid #27272a; font-size: 12px; transition: all 0.3s; }
+        #theme-toggle:hover { border-color: #52525b; }
+
+        body.light { background-color: #f8f9fa !important; color: #1a1a1a !important; }
+        body.light .animal-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.1); }
+        body.light .text-white, body.light h1 { color: #000 !important; }
+    </style>
+</head>
+<body class="dark">
+    <div id="particles-js"></div>
+
+    <header id="main-header">
+        <div class="max-w-6xl mx-auto w-full flex justify-between items-center px-4">
+            <a href="index.html" class="back-btn">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Paolo Garcia
+            </a>
+            <button id="theme-toggle" onclick="toggleTheme()">🌙 Mode</button>
+        </div>
+    </header>
+
+    <div class="content-wrapper px-6">
+        <div class="max-w-4xl mx-auto text-center mb-16">
+            <span class="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500 block mb-4">Nature's Finest</span>
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tighter text-white mb-6">Favorite Animal</h1>
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tighter text-white mb-6">CATS</h1>
+            <p class="text-zinc-500 leading-relaxed max-w-2xl mx-auto text-sm md:text-base">
+                A tribute to the creatures that embody strength, grace, and curiosity. Hover over each card to see them in detail.
+            </p>
+        </div>
+
+        <div class="animal-grid mb-32">
+            <div class="animal-card">
+                <div class="animal-img">
+                    <img src="jiji.jpeg" alt="Cat"> </div>
+                <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">The Cat</h3>
+                <p class="text-zinc-500 text-xs leading-relaxed uppercase font-medium">Independent • Graceful • Agile</p>
+                <p class="mt-4 text-zinc-400 text-sm">Much like the digital cat on my homepage, real cats represent a perfect balance of curiosity and independence.</p>
+            </div>
+
+            <div class="animal-card">
+                <div class="animal-img">
+                    <img src="memeCat.jpeg" alt="Meme Cat"> </div>
+                <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">Meme Cat</h3>
+                <p class="text-zinc-500 text-xs leading-relaxed uppercase font-medium">Funny • Meme-worthy • Internet Icon</p>
+                <p class="mt-4 text-zinc-400 text-sm">The meme cat is a cultural icon that brings joy and humor to the internet.</p>
+            </div>
+
+            <div class="animal-card">
+                <div class="animal-img">
+                    <img src="streetCat.jpeg" alt="Street Cat"> </div>
+                <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">The Street Cat</h3>
+                <p class="text-zinc-500 text-xs leading-relaxed uppercase font-medium">Adaptable • Resourceful • Independent</p>
+                <p class="mt-4 text-zinc-400 text-sm">Street cats are resilient and adaptable, thriving in urban environments with minimal resources.</p>
+            </div>
+        </div>
+
+        <footer class="max-w-6xl mx-auto py-24 border-t border-white/5 text-center text-zinc-600 font-bold uppercase text-[10px] tracking-[0.5em]">
+            © 2026 Nature Showcase • PAOLO GARCIA
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('light');
+            const btn = document.getElementById('theme-toggle');
+            if (body.classList.contains('light')) {
+                btn.innerText = "☀️ Mode";
+                initParticles("#000000");
+            } else {
+                btn.innerText = "🌙 Mode";
+                initParticles("#ffffff");
+            }
+        }
+
+        // --- CLONED PARTICLES FROM INDEX.HTML ---
+        function initParticles(color) {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 110, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": color },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": { "enable": true, "distance": 150, "color": color, "opacity": 0.4, "width": 1.5 },
+                    "move": { "enable": true, "speed": 2, "out_mode": "out" }
+                },
+                "interactivity": {
+                    "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } },
+                    "modes": { "repulse": { "distance": 100, "duration": 0.4 } }
+                },
+                "retina_detect": true
+            });
+        }
+        initParticles("#ffffff");
+    </script>
+</body>
+</html>

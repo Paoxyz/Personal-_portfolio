@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Anime Vault | Paolo Garcia</title>
+    <style>
+        /* --- DYNAMIC ACTION BACKGROUND --- */
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; background-color: #050505; }
+        
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(255,255,255,0.02) 100px, rgba(255,255,255,0.02) 101px);
+            z-index: 2; pointer-events: none; animation: slide 20s linear infinite;
+        }
+        @keyframes slide { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
+
+        body { background-color: #050505; color: #efefef; font-family: 'Inter', sans-serif; overflow-x: hidden; padding-top: 80px; }
+        .content-wrapper { position: relative; z-index: 10; }
+
+        .anime-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+
+        .anime-card {
+            position: relative; height: 450px; border-radius: 15px; overflow: hidden;
+            background: #111; border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+        }
+
+        .anime-card:hover { transform: scale(1.03) rotate(1deg); border-color: #fff; box-shadow: 0 0 50px rgba(255,255,255,0.1); }
+
+        .anime-video { 
+            width: 100%; height: 100%; object-fit: cover; opacity: 0.6; 
+            transition: all 0.5s ease; filter: grayscale(50%);
+        }
+        .anime-card:hover .anime-video { opacity: 0.9; filter: grayscale(0%); transform: scale(1.1); }
+
+        .anime-info {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 20%, transparent);
+            pointer-events: none;
+        }
+        .anime-title { font-size: 32px; font-weight: 900; text-transform: uppercase; line-height: 0.9; letter-spacing: -1px; margin-bottom: 10px; }
+        .anime-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #71717a; border: 1px solid #27272a; padding: 4px 10px; border-radius: 4px; }
+
+        /* --- SPEAKER ICON STYLE --- */
+        .mute-toggle {
+            position: absolute; top: 15px; right: 15px; z-index: 50;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%; width: 32px; height: 32px; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            transition: 0.3s; backdrop-filter: blur(5px);
+        }
+        .mute-toggle:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
+        .mute-toggle svg { width: 16px; height: 16px; fill: white; }
+
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px; font-size: 10px;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #71717a; transition: 0.3s;
+        }
+        .back-btn:hover { color: #fff; }
+
+        .anime-card::before {
+            content: "IMPACT"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 80px; font-weight: 900; color: rgba(255,255,255,0.1);
+            opacity: 0; pointer-events: none; z-index: 5;
+        }
+        .anime-card:hover::before { animation: glitchImpact 0.3s steps(2) infinite; opacity: 1; }
+        @keyframes glitchImpact {
+            0% { transform: translate(-52%, -48%) skew(5deg); }
+            50% { transform: translate(-48%, -52%) skew(-5deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <header class="fixed top-0 left-0 w-full p-8 z-[100] flex justify-between items-center backdrop-blur-sm">
+        <a href="index.html" class="back-btn">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Return to Base
+        </a>
+        <div class="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-600">My Masterpiece</div>
+    </header>
+
+    <div class="content-wrapper">
+        <div class="max-w-4xl mx-auto text-center mt-20 mb-10 px-6">
+            <h1 class="text-7xl md:text-8xl font-black tracking-tighter text-white uppercase italic">The Vault</h1>
+            <p class="text-zinc-500 mt-4 uppercase tracking-widest text-xs font-bold">Curated Anime Masterpieces</p>
+        </div>
+
+        <div class="anime-grid">
+            <div class="anime-card">
+                <button class="mute-toggle" onclick="toggleMute(this)">
+                    <svg class="speaker-off" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM4 9v6h4l5 5V4L8 9H4z"></path></svg>
+                </button>
+                <video src="Solo-Leveling.mp4" class="anime-video" loop muted autoplay playsinline></video>
+                <div class="anime-info">
+                    <span class="anime-tag">Action • Fantasy</span>
+                    <h3 class="anime-title text-white">Solo<br>Leveling</h3>
+                    <p class="text-zinc-400 text-xs mt-2 uppercase font-bold tracking-widest">Status: Arise.</p>
+                </div>
+            </div>
+
+            <div class="anime-card">
+                <button class="mute-toggle" onclick="toggleMute(this)">
+                    <svg class="speaker-off" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM4 9v6h4l5 5V4L8 9H4z"></path></svg>
+                </button>
+                <video src="jujutsukaisen.mp4" class="anime-video" loop muted autoplay playsinline></video>
+                <div class="anime-info">
+                    <span class="anime-tag">Supernatural • Shonen</span>
+                    <h3 class="anime-title text-white">Jujutsu<br>Kaisen</h3>
+                    <p class="text-zinc-400 text-xs mt-2 uppercase font-bold tracking-widest">Status: Domain Expansion.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="max-w-6xl mx-auto py-24 text-center text-zinc-600 font-bold uppercase text-[10px] tracking-[0.5em]">
+            © 2026 Otaku Collection • PAOLO GARCIA
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Particle background logic
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { "value": 150, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "edge" },
+                "opacity": { "value": 0.2 },
+                "size": { "value": 2 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.1, "width": 1 },
+                "move": { "enable": true, "speed": 10, "direction": "right", "random": false, "straight": true, "out_mode": "out" }
+            }
+        });
+
+        // Toggle Mute Logic
+        function toggleMute(btn) {
+            const card = btn.closest('.anime-card');
+            const video = card.querySelector('video');
+            video.muted = !video.muted;
+            
+            // Toggle icon visual feedback (simple version)
+            btn.style.opacity = video.muted ? "0.5" : "1";
+            btn.style.background = video.muted ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.4)";
+        }
+    </script>
+</body>
+</html>

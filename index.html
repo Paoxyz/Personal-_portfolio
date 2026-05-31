@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Portfolio | Paolo Garcia</title>
+    <style>
+        /* --- SITE STYLES --- */
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        body { background-color: #050505; color: #efefef; font-family: 'Inter', sans-serif; overflow-x: hidden; transition: all 0.4s ease; }
+        .content-wrapper { position: relative; z-index: 10; }
+
+        body.light { background-color: #f8f9fa !important; color: #1a1a1a !important; }
+        body.light .text-white, body.light h1, body.light h2, body.light h3 { color: #000 !important; }
+        body.light .work-box { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.1); }
+
+        /* TIMELINE */
+        .timeline-container { position: relative; max-width: 1000px; margin: 0 auto; padding: 60px 0; }
+        .timeline-path { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: #333; transform: translateX(-50%); }
+        .timeline-event { position: relative; width: 50%; padding: 40px; box-sizing: border-box; }
+        .timeline-event.left { left: 0; text-align: right; }
+        .timeline-event.right { left: 50%; text-align: left; }
+        .timeline-marker { position: absolute; top: 48px; width: 12px; height: 12px; border-radius: 50%; background: #333; left: 50%; transform: translateX(-50%); z-index: 5; transition: all 0.3s ease; }
+        .left .timeline-marker { right: -6px; }
+        .right .timeline-marker { left: -6px; }
+        .timeline-event:hover .timeline-marker { background: #fff; box-shadow: 0 0 20px #fff; transform: scale(1.2); }
+
+        /* PROJECT BOXES */
+        .work-box { background: rgba(17, 17, 17, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; padding: 2.5rem; backdrop-filter: blur(15px); transition: all 0.5s; height: 100%; }
+        .work-box:hover { transform: translateY(-10px); border-color: rgba(255, 255, 255, 0.2); }
+
+        /* ENDLESS MARQUEE */
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .marquee-container { overflow: hidden; mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); margin-bottom: 5rem; }
+        .marquee { display: flex; width: max-content; animation: scroll 30s linear infinite; }
+        .marquee:hover { animation-play-state: paused; }
+        .marquee-item { display: flex; align-items: center; gap: 14px; background: rgba(255, 255, 255, 0.03); padding: 12px 24px; margin: 0 12px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.05); }
+
+        /* --- BUTTON STYLES --- */
+        .alive-btn {
+            position: relative; background: #fff; color: #000; padding: 14px 32px; border-radius: 50px;
+            font-weight: 800; text-transform: uppercase; font-size: 11px; transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+        .alive-btn:hover { transform: translateY(-5px) scale(1.08); box-shadow: 0 15px 30px rgba(255, 255, 255, 0.2); background: #f0f0f0; }
+        .alive-btn::after { content: '🐾'; position: absolute; right: -25px; opacity: 0; transition: all 0.3s ease; }
+        .alive-btn:hover::after { right: 12px; opacity: 1; }
+        .alive-btn:hover { padding-right: 42px; }
+
+        @keyframes subtlePulse { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
+        .pulse-effect { animation: subtlePulse 2s infinite; }
+
+        /* DISCOVER SIGN */
+        .discover-sign { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: #71717a; font-size: 10px; font-weight: 900; letter-spacing: 0.3em; text-transform: uppercase; }
+        .pulse-ring { width: 8px; height: 8px; background: #fff; border-radius: 50%; position: relative; }
+        .pulse-ring::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: #fff; animation: ring 1.5s infinite ease-out; }
+        @keyframes ring { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(3); opacity: 0; } }
+
+        /* --- DIGITAL CAT --- */
+        #pet-container { position: fixed; width: 80px; height: 100px; z-index: 9999; cursor: pointer; transition: left 1s cubic-bezier(0.34, 1.56, 0.64, 1), top 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        #pet-container.game-active { transition: left 0.3s ease-out, top 0.3s ease-out; }
+        .cat-bubble { position: absolute; top: -45px; left: 50%; transform: translateX(-50%) scale(0); background: #fff; color: #000; padding: 6px 14px; border-radius: 12px; font-size: 11px; font-weight: bold; white-space: nowrap; transition: transform 0.3s; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10000; }
+        .cat-bubble.show { transform: translateX(-50%) scale(1); }
+        .cat-visuals { position: relative; width: 60px; height: 45px; background: #fff; border-radius: 40% 40% 30% 30%; margin-top: 30px; transition: background 0.4s ease; }
+        body.light .cat-visuals, body.light .cat-head { background: #2d3436; }
+        .cat-head { position: absolute; top: -22px; left: 5px; width: 50px; height: 38px; background: inherit; border-radius: 50%; }
+        .cat-ear { position: absolute; top: -12px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 18px solid #fff; }
+        body.light .cat-ear { border-bottom-color: #2d3436; }
+        .cat-ear.l { left: 4px; transform: rotate(-15deg); }
+        .cat-ear.r { right: 4px; transform: rotate(15deg); }
+        .cat-eye { position: absolute; top: 15px; width: 6px; height: 6px; background: #000; border-radius: 50%; }
+        body.light .cat-eye { background: #fff; }
+        .cat-eye.l { left: 14px; }
+        .cat-eye.r { right: 28px; }
+        
+        /* RESTORED TAIL WAG */
+        .cat-tail { position: absolute; right: -8px; bottom: 8px; width: 25px; height: 8px; background: inherit; border-radius: 10px; transform-origin: left; animation: wag 0.8s infinite alternate ease-in-out; }
+        @keyframes wag { from { transform: rotate(-10deg); } to { transform: rotate(30deg); } }
+        
+        .act-jump { animation: jump 0.5s ease; }
+        .act-shake { animation: shake 0.2s infinite; }
+        @keyframes jump { 50% { transform: translateY(-70px) rotate(10deg); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-6px); } }
+    </style>
+</head>
+<body class="dark p-4 md:p-10">
+    <div id="particles-js"></div>
+
+    <div id="pet-container">
+        <div id="cat-bubble" class="cat-bubble">Meow!</div>
+        <div id="cat-main">
+            <div class="cat-ear l"></div>
+            <div class="cat-ear r"></div>
+            <div class="cat-visuals">
+                <div class="cat-head">
+                    <div class="cat-eye l"></div>
+                    <div class="cat-eye r"></div>
+                </div>
+                <div class="cat-tail"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <button id="theme-toggle" class="fixed top-8 right-8 z-50 p-3 rounded-full bg-transparent border border-zinc-800 hover:border-zinc-400 transition-all">
+            <svg id="sun-icon" class="w-6 h-6 hidden text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+            <svg id="moon-icon" class="w-6 h-6 text-zinc-500" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+        </button>
+
+        <header class="max-w-6xl mx-auto mb-20 pt-16">
+            <div class="flex flex-col md:flex-row items-center gap-10 mb-12">
+                <div class="relative w-44 h-44 rounded-full border-2 border-zinc-800 p-2 overflow-hidden shadow-2xl">
+                    <img src="pao.jpeg" alt="Paolo Garcia" class="w-full h-full object-cover rounded-full">
+                </div>
+                <div class="text-center md:text-left">
+                    <h1 class="text-7xl md:text-8xl font-bold tracking-tighter mb-2 text-white">Paolo Garcia</h1>
+                    <div class="flex items-center justify-center md:justify-start gap-2 text-zinc-500 mb-4">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+                        <span class="text-xs font-bold uppercase tracking-widest">Western Mindanao State University</span>
+                    </div>
+                    <p class="text-zinc-500 text-2xl font-bold tracking-[0.3em] uppercase">Software Developer</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-8">
+                <div class="flex flex-wrap gap-3">
+                    <a href="mailto:paobutdiff@gmail.com" class="text-white border border-zinc-700 px-8 py-3 rounded-full hover:bg-white hover:text-black transition font-bold uppercase text-xs">paobutdiff@gmail.com</a>
+                    <a href="blog2026.html" class="alive-btn pulse-effect">View what I am doing</a>
+                </div>
+                
+                <div class="discover-sign">
+                    <div class="pulse-ring"></div>
+                    <span>Click to explore</span>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                    <a href="favgame.html" class="alive-btn">Favorite Game</a>
+                    <a href="favsong.html" class="alive-btn">Favorite Music</a>
+                    <a href="favanimals.html" class="alive-btn">Favorite Animals</a>
+                    <a href="favanime.html" class="alive-btn">Favorite Anime</a>
+                </div>
+
+                <div class="flex gap-4">
+                    <a href="https://github.com/Paoxyz" target="_blank"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                    <a href="https://www.linkedin.com/in/paolo-garcia-878910365" target="_blank"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                    <a href="https://www.instagram.com/pao.xyz" target="_blank"><img src="https://cdn.simpleicons.org/instagram/currentColor" class="w-7 h-7"></a>
+                    <a href="https://www.facebook.com/share/186op6w6gM/" target="_blank"><img src="https://cdn.simpleicons.org/facebook/currentColor" class="w-7 h-7"></a>
+                    <a href="https://x.com/Paoxyzzz" target="_blank"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                </div>
+            </div>
+        </header>
+
+        <section class="max-w-6xl mx-auto">
+            <div class="marquee-container">
+                <div class="marquee">
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/cplusplus/currentColor" class="w-6"> C++</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/python/currentColor" class="w-6"> Python</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/php/currentColor" class="w-6"> PHP</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/javascript/currentColor" class="w-6"> JavaScript</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/mysql/currentColor" class="w-6"> SQL</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/cisco/currentColor" class="w-6"> Packet Tracer</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/cplusplus/currentColor" class="w-6"> C++</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/python/currentColor" class="w-6"> Python</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/php/currentColor" class="w-6"> PHP</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/javascript/currentColor" class="w-6"> JavaScript</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/mysql/currentColor" class="w-6"> SQL</div>
+                    <div class="marquee-item"><img src="https://cdn.simpleicons.org/cisco/currentColor" class="w-6"> Packet Tracer</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto mb-20">
+            <h2 class="text-sm font-black text-zinc-600 uppercase tracking-[0.5em] mb-20 text-center">Development Journey</h2>
+            <div class="timeline-container">
+                <div class="timeline-path"></div>
+                <div class="timeline-event left"><div class="timeline-marker"></div><h3 class="text-2xl font-bold text-white">Payment Application and Loan Tracker</h3><p class="text-zinc-500">2025 | Final and Midterm Project</p></div>
+                <div class="timeline-event right"><div class="timeline-marker"></div><h3 class="text-2xl font-bold text-white">Online Learning System</h3><p class="text-zinc-500">2025 | Built Software for Thesis</p></div>
+                <div class="timeline-event left"><div class="timeline-marker"></div><h3 class="text-2xl font-bold text-white">Pokedex Front-End</h3><p class="text-zinc-500">2025 | POKE API Assignment</p></div>
+                <div class="timeline-event right"><div class="timeline-marker"></div><h3 class="text-2xl font-bold text-white">Vigilant</h3><p class="text-zinc-500">2025 | Security Application</p></div>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto mb-32 px-4">
+            <h2 class="text-4xl font-bold mb-16 text-center tracking-tighter text-white">Detailed Case Studies</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="work-box group"><span class="text-[10px] text-zinc-500 uppercase tracking-widest block mb-2">HTML / CSS / JS / PHP / SQL</span><h3 class="text-3xl font-bold mb-4 text-white">Loan Tracker</h3><p class="text-zinc-400">Robust tracking for financial debt cycles using local database storage.</p></div>
+                <div class="work-box group"><span class="text-[10px] text-zinc-500 uppercase tracking-widest block mb-2">HTML / CSS / JS / PHP / SQL</span><h3 class="text-3xl font-bold mb-4 text-white">Online Learning</h3><p class="text-zinc-400">Comprehensive online classroom featuring teacher dashboards.</p></div>
+                <div class="work-box group"><span class="text-[10px] text-zinc-500 uppercase tracking-widest block mb-2">HTML / CSS / API</span><h3 class="text-3xl font-bold mb-4 text-white">Pokedex</h3><p class="text-zinc-400">Interactive app pulling real-time data from RESTful APIs.</p></div>
+                <div class="work-box group"><span class="text-[10px] text-zinc-500 uppercase tracking-widest block mb-2">FIGMA / CANVA</span><h3 class="text-3xl font-bold mb-4 text-white">V-Vigilant</h3><p class="text-zinc-400">Simulation focusing on Monitoring and Prevention of Accidents.</p></div>
+            </div>
+        </section>
+
+        <footer class="max-w-6xl mx-auto py-24 border-t border-white/5 text-center text-zinc-600 font-bold uppercase text-[10px] tracking-[0.5em]">
+            © 2026 Developer Portfolio • PAOLO GARCIA
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        const body = document.body;
+        const pet = document.getElementById('pet-container');
+        const catMain = document.getElementById('cat-main');
+        const bubble = document.getElementById('cat-bubble');
+
+        function initParticles(color) {
+            particlesJS('particles-js', {
+                "particles": { "number": { "value": 110, "density": { "enable": true, "value_area": 800 } }, "color": { "value": color }, "size": { "value": 3, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": color, "opacity": 0.4, "width": 1.5 }, "move": { "enable": true, "speed": 2 } },
+                "interactivity": { "events": { "onhover": { "enable": true, "mode": "repulse" } } }
+            });
+        }
+        initParticles("#ffffff");
+
+        document.getElementById('theme-toggle').onclick = () => {
+            const isDark = body.classList.contains('dark');
+            body.classList.toggle('dark', !isDark); body.classList.toggle('light', isDark);
+            initParticles(isDark ? "#000000" : "#ffffff");
+            document.getElementById('sun-icon').classList.toggle('hidden');
+            document.getElementById('moon-icon').classList.toggle('hidden');
+        };
+
+        // --- CAT GAME & MOVEMENT LOGIC ---
+        let gameScore = 0; 
+        let isGameMode = false;
+
+        function showCatBubble(text) { 
+            bubble.innerText = text; 
+            bubble.classList.add('show'); 
+            setTimeout(() => bubble.classList.remove('show'), 2000); 
+        }
+
+        function moveCat() {
+            const margin = 120;
+            const x = Math.max(20, Math.random() * (window.innerWidth - margin));
+            const y = Math.max(50, Math.random() * (window.innerHeight - margin));
+            
+            const currentX = parseFloat(pet.style.left || 0);
+            catMain.style.transform = x < currentX ? 'scaleX(-1)' : 'scaleX(1)';
+            
+            pet.style.left = `${x}px`; 
+            pet.style.top = `${y}px`;
+        }
+
+        pet.onclick = () => { 
+            if (!isGameMode) {
+                isGameMode = true; 
+                gameScore = 0; 
+                pet.classList.add('game-active');
+                showCatBubble("Catch me!"); 
+                startPounceGame();
+            } else {
+                gameScore++; 
+                catMain.classList.add('act-shake');
+                setTimeout(() => catMain.classList.remove('act-shake'), 200);
+                if (gameScore >= 5) {
+                    isGameMode = false; 
+                    pet.classList.remove('game-active');
+                    showCatBubble("You win! 🏆"); 
+                    catMain.classList.add('act-jump');
+                    setTimeout(() => catMain.classList.remove('act-jump'), 500);
+                } else {
+                    showCatBubble(`Caught! ${gameScore}/5`); 
+                    moveCat();
+                }
+            }
+        };
+
+        function startPounceGame() {
+            const gameInterval = setInterval(() => { 
+                if (isGameMode && gameScore < 5) moveCat(); 
+                else clearInterval(gameInterval); 
+            }, 800);
+        }
+
+        window.addEventListener('resize', moveCat);
+        setInterval(() => { if (!isGameMode) moveCat(); }, 6000);
+        moveCat();
+    </script>
+</body>
+</html>

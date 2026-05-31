@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Internship Blog | Paolo Garcia</title>
+    <style>
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        body { background-color: #050505; color: #efefef; font-family: 'Inter', sans-serif; overflow-x: hidden; transition: all 0.4s ease; }
+        .content-wrapper { position: relative; z-index: 10; }
+
+        body.light { background-color: #f8f9fa !important; color: #1a1a1a !important; }
+        body.light .text-white, body.light h1, body.light h2 { color: #000 !important; }
+
+        /* Slideshow Container */
+        .slideshow-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(17, 17, 17, 0.6);
+            backdrop-filter: blur(15px);
+            aspect-ratio: 16 / 9;
+        }
+
+        .mySlides { display: none; width: 100%; height: 100%; position: relative; }
+        
+        /* Photo Placeholder Design */
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #111, #222);
+            color: #555;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        img { width: 100%; height: 100%; object-fit: cover; }
+
+        .caption {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.3s;
+            user-select: none;
+            background: rgba(0,0,0,0.2);
+        }
+        .next { right: 0; border-radius: 3px 0 0 3px; }
+        .prev:hover, .next:hover { background-color: rgba(255,255,255,0.1); }
+
+        .dot-container { text-align: center; padding: 20px; }
+        .dot { cursor: pointer; height: 8px; width: 8px; margin: 0 4px; background-color: #333; border-radius: 50%; display: inline-block; transition: 0.3s; }
+        .active, .dot:hover { background-color: #fff; width: 24px; border-radius: 10px; }
+    </style>
+</head>
+<body class="dark p-4 md:p-10">
+    <div id="particles-js"></div>
+
+    <div class="content-wrapper">
+        <nav class="max-w-6xl mx-auto pt-10 mb-10">
+            <a href="index.html" class="text-zinc-500 hover:text-white transition flex items-center gap-2 font-bold uppercase text-xs">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Back to Portfolio
+            </a>
+        </nav>
+
+        <header class="max-w-6xl mx-auto text-center mb-16">
+            <span class="text-[10px] text-zinc-500 uppercase tracking-[0.5em] block mb-4">Internship Experience 2026</span>
+            <h1 class="text-5xl md:text-6xl font-bold tracking-tighter text-white mb-6">St. Joseph Foundation School Inc.</h1>
+            <p class="text-zinc-500 max-w-2xl mx-auto">Documenting my journey as a Student intern. Trying to enhance my skills through trial and errors.</p>
+        </header>
+
+        <main class="max-w-6xl mx-auto">
+            <div class="slideshow-container">
+                <div class="mySlides fade">
+                    <div class="photo-placeholder">Insert Photo Here</div>
+                    <div class="caption">Collaborating with the IT team on network topology.</div>
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="photo-placeholder">Insert Photo Here</div>
+                    <div class="caption">Testing the Online Learning System deployment.</div>
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="photo-placeholder">Insert Photo Here</div>
+                    <div class="caption">Daily stand-up and documentation review.</div>
+                </div>
+
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+
+            <div class="dot-container">
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+        </main>
+
+        <footer class="max-w-6xl mx-auto py-24 border-t border-white/5 text-center text-zinc-600 font-bold uppercase text-[10px] tracking-[0.5em]">
+            © 2026 Paolo Garcia • Internship Log
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // --- PARTICLES ---
+        function initParticles(color) {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 110, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": color },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": { "enable": true, "distance": 150, "color": color, "opacity": 0.4, "width": 1.5 },
+                    "move": { "enable": true, "speed": 2 }
+                }
+            });
+        }
+        initParticles("#ffffff");
+
+        // --- SLIDESHOW LOGIC ---
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) { showSlides(slideIndex += n); }
+        function currentSlide(n) { showSlides(slideIndex = n); }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            for (i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
+            for (i = 0; i < dots.length; i++) { dots[i].className = dots[i].className.replace(" active", ""); }
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className += " active";
+        }
+
+        // Auto-advance slides every 5 seconds
+        setInterval(() => { plusSlides(1); }, 5000);
+    </script>
+</body>
+</html>
